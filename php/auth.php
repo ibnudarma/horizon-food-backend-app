@@ -39,13 +39,6 @@ try {
             'status' => true,
             'message' => 'Login berhasil',
             'token' => $jwt,
-            'data' => [
-                'id_account' => $user['id_account'],
-                'id_customer' => $user['id_customer'],
-                'email' => $user['email'],
-                'nama' => $user['nama'],
-                'no_hp' => $user['no_hp']
-            ]
         ]);
     } else {
         http_response_code(401);
