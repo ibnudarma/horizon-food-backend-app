@@ -15,6 +15,12 @@ switch ($resource) {
     case 'accounts':
         require_once 'php/account.php';
         break;
+    case 'menu':
+        require_once 'php/menu.php';
+        break;
+    case 'kantin':
+        require_once 'php/kantin.php';
+        break;
     default:
         http_response_code(404);
         echo json_encode([
