@@ -4,7 +4,7 @@ $db = 'mysql';
 $host = 'localhost';
 $db_name = 'horizon_food';
 $username = 'root';
-$password = '';
+$password = 'Horizon2025#';
 
 try {
     $pdo = new PDO("$db:host=$host;dbname=$db_name;charset=utf8", $username, $password);

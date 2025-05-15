@@ -28,7 +28,7 @@ function checkToken()
         // Decode token
         $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
         // Kembalikan payload token
-        return (array) $decoded;
+        return $decoded;
 
     } catch (Exception $e) {
         http_response_code(401);

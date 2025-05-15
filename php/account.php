@@ -3,7 +3,7 @@ require 'middleware.php';
 
 switch ($method) {
     case 'GET':
-        // checkToken();
+        checkToken();
 
         try {
             $query = 'SELECT a.id_account, a.email, a.role, c.nama, c.no_hp

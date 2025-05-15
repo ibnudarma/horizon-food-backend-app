@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 header("Content-Type: application/json");
 require_once("php/database.php");
 
@@ -20,6 +24,9 @@ switch ($resource) {
         break;
     case 'kantin':
         require_once 'php/kantin.php';
+        break;
+    case 'myprofile':
+        require_once 'php/profile.php';
         break;
     default:
         http_response_code(404);

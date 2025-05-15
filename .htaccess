@@ -1,3 +1,7 @@
+# Enable mod_rewrite
 RewriteEngine On
+
+# Jika file atau folder yang diminta tidak ada, arahkan ke index.php
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]

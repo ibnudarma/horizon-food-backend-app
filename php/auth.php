@@ -12,7 +12,7 @@ if (!isset($input['email']) || !isset($input['password'])) {
 try {
     // JOIN ke tabel customer
     $stmt = $pdo->prepare("
-        SELECT a.*, c.nama, c.no_hp
+        SELECT a.*, c.id_customer, c.nama, c.no_hp
         FROM account a
         LEFT JOIN customer c ON a.id_account = c.account_id
         WHERE a.email = ?
@@ -25,6 +25,7 @@ try {
             'iat' => time(),
             'exp' => time() + (60 * 60 * 24), // 24 jam
             'id_account' => $user['id_account'],
+            'id_customer' => $user['id_customer'],
             'email' => $user['email'],
             'role' => $user['role'],
             'nama' => $user['nama'],
@@ -40,8 +41,8 @@ try {
             'token' => $jwt,
             'data' => [
                 'id_account' => $user['id_account'],
+                'id_customer' => $user['id_customer'],
                 'email' => $user['email'],
-                'role' => $user['role'],
                 'nama' => $user['nama'],
                 'no_hp' => $user['no_hp']
             ]

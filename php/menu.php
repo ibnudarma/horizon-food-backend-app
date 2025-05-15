@@ -3,22 +3,35 @@ require 'middleware.php';
 
 switch ($method) {
     case 'GET':
-        // checkToken();
+        checkToken();
 
         try {
-            $query = 'SELECT m.gambar, m.nama_menu, m.harga, c.category, s.nama_kantin
-                      FROM menu as m JOIN category as c ON m.category_id = c.id_category
-                      JOIN seller as s ON m.seller_id = s.id_seller';
-            $stmt = $pdo->query($query);
+            $menu = [];
+
+            // Ambil input dari query string
+            $id = $_GET['id'] ?? null;
+
+            if ($id !== null) {
+                $stmt = $pdo->prepare("SELECT * FROM menu WHERE id_menu = ?");
+                $stmt->execute([$id]);
+            } else {
+                $stmt = $pdo->query(
+                    "SELECT m.id_menu, m.gambar, m.nama_menu, m.harga, c.category, s.nama_kantin
+                     FROM menu AS m
+                     JOIN category AS c ON m.category_id = c.id_category
+                     JOIN seller AS s ON m.seller_id = s.id_seller"
+                );
+            }
+
+            // Ambil data dari statement
             $menu = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $result = [
-                'status' => http_response_code(200),
-                'message'=> 'Berhasil mengambil data',
-                'data'   => $menu
-            ];
-            
-            echo json_encode($result);
+            http_response_code(200);
+            echo json_encode([
+                'status'  => 200,
+                'message' => 'Berhasil mengambil data',
+                'data'    => $menu
+            ]);
 
         } catch (PDOException $e) {
             http_response_code(500);
@@ -30,7 +43,6 @@ switch ($method) {
         }
 
         break;
-
 
     default:
         http_response_code(405);
