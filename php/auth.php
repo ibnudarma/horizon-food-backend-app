@@ -35,6 +35,7 @@ try {
         $secretKey = "Horizon_Food_Secret_Key";
         $jwt = JWT::encode($payload, $secretKey, 'HS256');
 
+        http_response_code(200);
         echo json_encode([
             'status' => true,
             'message' => 'Login berhasil',

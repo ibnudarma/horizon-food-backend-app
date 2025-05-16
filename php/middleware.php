@@ -3,18 +3,31 @@ require 'vendor/autoload.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+function getAuthorizationHeader() {
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        return trim($_SERVER["HTTP_AUTHORIZATION"]);
+    }
+
+    // Fallback untuk beberapa konfigurasi Apache
+    if (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        if (isset($headers['Authorization'])) {
+            return trim($headers['Authorization']);
+        }
+    }
+
+    return null;
+}
+
 function checkToken()
 {
-    // Ambil Authorization header
-    $headers = apache_request_headers();
-    if (!isset($headers['Authorization'])) {
+    $authHeader = getAuthorizationHeader();
+    if (!$authHeader) {
         http_response_code(401);
         echo json_encode(['error' => 'Token tidak ditemukan']);
         exit;
     }
 
-    // Format: Bearer <token>
-    $authHeader = $headers['Authorization'];
     if (!preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
         http_response_code(401);
         echo json_encode(['error' => 'Format token salah']);
@@ -25,9 +38,7 @@ function checkToken()
     $secretKey = "Horizon_Food_Secret_Key";
 
     try {
-        // Decode token
         $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
-        // Kembalikan payload token
         return $decoded;
 
     } catch (Exception $e) {
@@ -40,3 +51,4 @@ function checkToken()
         exit;
     }
 }
+
